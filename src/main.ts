@@ -14,6 +14,6 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(3333);
+  await app.listen(`https://market-list-production.up.railway.app:${3333}`);
 }
 bootstrap();
