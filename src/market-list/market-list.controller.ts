@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Logger,
 } from '@nestjs/common';
 import { MarketListService } from './market-list.service';
 import { CreateMarketListDto } from './dto/create-market-list.dto';

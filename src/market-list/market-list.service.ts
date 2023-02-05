@@ -1,5 +1,5 @@
 import { PrismaService } from '../prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateMarketListDto } from './dto/create-market-list.dto';
 import { UpdateMarketListDto } from './dto/update-market-list.dto';
 import { MarketList } from '@prisma/client';
