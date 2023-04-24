@@ -10,17 +10,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model MarketList {
-  id          String  @id @default(uuid())
-  title       String
-  description String?
-  quantity    Int     @default(1)
-}
-
 model User {
-  id String @id @default(uuid())
-
+  id       String @id @default(uuid())
   email    String @unique
   password String
   name     String
+}
+
+model Seguimistas {
+  id             String  @id @default(uuid())
+  full_name      String
+  date_of_birth  String
+  nickname       String?
+  profession     String?
+  address        String?
+  neighborhood   String?
+  city           String?
+  email          String?
+  mobile_phone   String?
+  landline_phone String?
+
+  participations Participations[]
+}
+
+model Groups {
+  id   String @id @default(uuid())
+  name String
+
+  participations Participations[]
+}
+
+model Participations {
+  id String @id @default(uuid())
+
+  seguimista_id String
+  group_id      String
+  year          Int
+
+  group      Groups      @relation(fields: [group_id], references: [id])
+  seguimista Seguimistas @relation(fields: [seguimista_id], references: [id])
 }

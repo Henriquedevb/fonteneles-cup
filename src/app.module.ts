@@ -1,15 +1,25 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MarketListModule } from './market-list/market-list.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';
+
 import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { SeguimistasModule } from './modules/seguimistas/seguimistas.module';
+import { GroupsModule } from './modules/groups/groups.module';
+import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
+import { ParticipationsModule } from './modules/participations/participations.module';
 
 @Module({
-  imports: [MarketListModule, PrismaModule, UserModule, AuthModule],
+  imports: [
+    PrismaModule,
+    UserModule,
+    AuthModule,
+    SeguimistasModule,
+    GroupsModule,
+    ParticipationsModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,
