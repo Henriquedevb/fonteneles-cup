@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { IsPublic } from '../auth/decorators/is-public.decorator';
 
 @Controller('user')
 export class UserController {
@@ -10,6 +11,7 @@ export class UserController {
     private readonly prismaService: PrismaService,
   ) {}
 
+  @IsPublic()
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
