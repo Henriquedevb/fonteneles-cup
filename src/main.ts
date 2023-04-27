@@ -5,7 +5,14 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors();
+  app.enableCors({
+    origin: [
+      'https://app-segueme-psa-henriquedevb.vercel.app',
+      'https://app-segueme-psa-henriquedevb.vercel.app/',
+      '*',
+    ],
+    credentials: true,
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
