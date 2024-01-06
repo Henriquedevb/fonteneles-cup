@@ -16,8 +16,7 @@ export class AuthService {
 
   async login(user: User): Promise<UserToken> {
     const payload: UserPayload = {
-      email: user.email,
-      username: user.username,
+      usernameOrEmail: user.usernameOrEmail,
       sub: user.id,
     };
 
@@ -26,8 +25,10 @@ export class AuthService {
     };
   }
 
-  async validateUser(email: string, password: string): Promise<User> {
-    const [user] = await this.authRepository.findByEmail(email);
+  async validateUser(usernameOrEmail: string, password: string): Promise<User> {
+    const [user] = await this.authRepository.findByEmailOrUsername(
+      usernameOrEmail,
+    );
 
     if (user) {
       const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -40,8 +41,6 @@ export class AuthService {
       }
     }
 
-    throw new UnauthorizedError(
-      'Email address or password provided is incorrect.',
-    );
+    throw new UnauthorizedError('login or password provided is incorrect.');
   }
 }
