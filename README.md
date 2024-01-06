@@ -23,7 +23,7 @@ Don't forget to run migrations and seeds to populate initial data and create the
 3 - Run the project with:
 
 ```ts
-npm run start
+npm run start:dev
 ```
 
 ## To run migrations, seeds, and everything related to the database, use the following commands:
