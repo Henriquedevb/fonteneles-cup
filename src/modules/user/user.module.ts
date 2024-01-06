@@ -1,12 +1,18 @@
 import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
-import { PrismaModule } from 'src/prisma/prisma.module';
+import { UserRepository } from './repositories/user.repository';
+import { KnexModule } from 'nest-knexjs';
+import knexConfigs from '../../database/knexfile';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [
+    KnexModule.forRoot({
+      config: knexConfigs,
+    }),
+  ],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserRepository, UserService],
   exports: [UserService],
 })
 export class UserModule {}

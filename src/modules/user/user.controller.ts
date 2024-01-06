@@ -1,29 +1,25 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
 
 @Controller('user')
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly prismaService: PrismaService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
-  @IsPublic()
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
-  }
+  // @IsPublic()
+  // @Post()
+  // create(@Body() createUserDto) {
+  //   return this.userService.create(createUserDto);
+  // }
 
   @Get()
+  @IsPublic()
   findAllUsers() {
-    return this.prismaService.user.findMany();
+    return this.userService.findUsers();
   }
 
-  @Get(':email')
-  findByEmail(@Param('email') email: string) {
-    return this.userService.findByEmail(email);
-  }
+  // @Get(':email')
+  // findByEmail(@Param('email') email: string) {
+  //   return this.userService.findByEmail(email);
+  // }
 }
