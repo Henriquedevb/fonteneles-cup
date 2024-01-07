@@ -1,32 +1,36 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 
 import * as bcrypt from 'bcrypt';
 import { User } from './entities/user.entity';
 import { UserRepository } from './repositories/user.repository';
+import { CreateUserSchema } from './schemas/create-user.schema';
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  // async create(createUserDto): Promise<User> {
-  //   const data = {
-  //     ...createUserDto,
-  //     password: await bcrypt.hash(createUserDto.password, 10),
-  //   };
+  async create(createUserSchema: CreateUserSchema): Promise<User> {
+    const userAlreadyExists = await this.userRepository.findByEmailOrUsername({
+      username: createUserSchema.username,
+      email: createUserSchema.email,
+    });
 
-  //   const userCreated = await this.prismaService.user.create({ data });
+    if (userAlreadyExists.length) {
+      throw new ConflictException('Username or email already exists.');
+    }
 
-  //   return {
-  //     ...userCreated,
-  //     password: undefined,
-  //   };
-  // }
+    const data = {
+      ...createUserSchema,
+      password: await bcrypt.hash(createUserSchema.password, 10),
+    };
 
-  // findByEmail(email: string) {
-  //   return this.prismaService.user.findUnique({
-  //     where: { email },
-  //   });
-  // }
+    const userCreated = await this.userRepository.create(data);
+
+    return {
+      ...userCreated,
+      password: undefined,
+    };
+  }
 
   async findUsers(): Promise<User[]> {
     return this.userRepository.find();

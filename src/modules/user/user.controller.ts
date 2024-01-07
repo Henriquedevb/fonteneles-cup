@@ -1,25 +1,20 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { IsPublic } from '../auth/decorators/is-public.decorator';
+import { CreateUserSchema } from './schemas/create-user.schema';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  // @IsPublic()
-  // @Post()
-  // create(@Body() createUserDto) {
-  //   return this.userService.create(createUserDto);
-  // }
+  @IsPublic()
+  @Post()
+  create(@Body() createUserSchema: CreateUserSchema) {
+    return this.userService.create(createUserSchema);
+  }
 
   @Get()
-  @IsPublic()
   findAllUsers() {
     return this.userService.findUsers();
   }
-
-  // @Get(':email')
-  // findByEmail(@Param('email') email: string) {
-  //   return this.userService.findByEmail(email);
-  // }
 }
